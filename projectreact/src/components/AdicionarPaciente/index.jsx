@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
 import './style.css';
+import { useState } from 'react';
 
-export default const AddPaciente = () => {
+export default function AddPaciente() {
   const [nome, setNome] = useState('');
   const [telefone, setTelefone] = useState('');
   const [horario, setHorario] = useState('');
+  const [pacientes, setPacientes] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aqui você pode fazer a lógica para salvar ou enviar os dados.
-    console.log('Paciente Adicionado', { nome, telefone, horario });
+    if (!nome || !telefone || !horario) return;
+
+    const novoPaciente = { id: Date.now(), nome, telefone, horario };
+    setPacientes([...pacientes, novoPaciente]);
+
+    // limpa o formulário
+    setNome('');
+    setTelefone('');
+    setHorario('');
+  };
+
+  const removerPaciente = (id) => {
+    setPacientes(pacientes.filter(p => p.id !== id));
   };
 
   return (
@@ -25,6 +37,7 @@ export default const AddPaciente = () => {
             required
           />
         </label>
+
         <label>
           Telefone:
           <input
@@ -34,6 +47,7 @@ export default const AddPaciente = () => {
             required
           />
         </label>
+
         <label>
           Horário de Atendimento:
           <input
@@ -43,8 +57,33 @@ export default const AddPaciente = () => {
             required
           />
         </label>
+
         <button type="submit">Adicionar</button>
       </form>
+
+      {/* Lista de pacientes */}
+      <h3>Lista de Pacientes</h3>
+      {pacientes.length === 0 ? (
+        <p className="vazio">Nenhum paciente adicionado ainda.</p>
+      ) : (
+        <ul className="lista-pacientes">
+          {pacientes.map((p) => (
+            <li key={p.id}>
+              <div>
+                <strong>{p.nome}</strong> <br />
+                Tel: {p.telefone} <br />
+                Horário: {p.horario}
+              </div>
+              <button
+                className="remover"
+                onClick={() => removerPaciente(p.id)}
+              >
+                Remover
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
-  )
+  );
 }

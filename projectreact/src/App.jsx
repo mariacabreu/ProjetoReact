@@ -1,14 +1,14 @@
 import './App.css'
-import './components/Header'
-import './components/AdicionarPaciente'
-import './components/Footer'
+import Header from'./components/Header'
+import AdicionarPaciente from './components/AdicionarPaciente'
+import Footer from'./components/Footer'
 
 export default function App() {
-  const [count, setCount] = useState(0)
-
   return (
+    <>
     <Header />
     <AdicionarPaciente />
     <Footer />
+    </>
   )
 }
